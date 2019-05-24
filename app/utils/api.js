@@ -18,7 +18,7 @@ function getRepos(username) {
 function calculateScore(profile, repos) {
     var followers = profile.followers
     var totalStars = getStarCount(repos)
-    return (3 * followers) + totalStars
+    return (followers * 3) + totalStars
 }
 
 function handleError(error) {
@@ -27,7 +27,7 @@ function handleError(error) {
 }
 
 function getStarCount(repos) {
-    return repos.data.reduce(function(count, repo){
+    return repos.reduce(function(count, repo){
         return count + repo.stargazers_count
     }, 0)
 }
@@ -40,10 +40,11 @@ function getUserData(player) {
         var profile = data[0]
         var repos = data[1]
 
-        return {
+        var result = {
             profile: profile,
-            score: calculateScore(profile,score)
+            score: calculateScore(profile,repos)
         }
+        return result
     })
 }
 
@@ -55,7 +56,7 @@ function sortPlayers(players) {
 
 module.exports = {
     battle: function(players){
-        return axios.all(player.map(getUserData))
+        return axios.all(players.map(getUserData))
         .then(sortPlayers)
         .catch(handleError)
     },
