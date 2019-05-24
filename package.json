@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "axios": "^0.18.0",
     "query-string": "^6.5.0",
     "react": "^16.8.6",
