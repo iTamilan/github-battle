@@ -1,9 +1,9 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const queryString = require('query-string');
-const api = require('../utils/api');
-const Link = require('react-router-dom').Link;
-const PlayerPreview = require('./PlayerPreview');
+import React from 'react'
+import PropTypes from 'prop-types'
+import queryString from 'query-string'
+import {battle} from '../utils/api'
+import {Link} from 'react-router-dom'
+import PlayerPreview from './PlayerPreview'
 
 function Profile (props) {
   const {login, avatar_url, name, location, company, followers, following, public_repos,blog} = props.info
@@ -43,7 +43,7 @@ Player.propTypes = {
   profile: PropTypes.object.isRequired,
 }
 
-class Results extends React.Component {
+export default class Results extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +56,7 @@ class Results extends React.Component {
   componentDidMount() {
     var players = queryString.parse(this.props.location.search);
 
-    api.battle([
+    battle([
       players.playerOneName,
       players.playerTwoName
     ]).then((players) => {
@@ -104,4 +104,3 @@ class Results extends React.Component {
     )
   }
 }
-module.exports = Results;

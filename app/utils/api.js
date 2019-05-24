@@ -1,5 +1,4 @@
-var axios = require('axios')
-
+import axios from 'axios'
 
 function getProfile(username) {
     return axios.get(`https://api.github.com/users/${username}`)
@@ -21,7 +20,7 @@ function handleError(error) {
 }
 
 function getStarCount(repos) {
-    return repos.reduce((count, repo) => count + repo.stargazers_count, 0)
+    return repos.reduce((count, {stargazers_count}) => count + stargazers_count, 0)
 }
 
 function getUserData(player) {
@@ -38,15 +37,14 @@ function sortPlayers(players) {
     return players.sort((a,b) => b.score - a.score)
 }
 
-module.exports = {
-    battle(players){
-        return Promise.all(players.map(getUserData))
+export function battle (players) {
+    return Promise.all(players.map(getUserData))
         .then(sortPlayers)
         .catch(handleError)
-    },
-    fetchPopularRepos (language) {
+}
+
+export function fetchPopularRepos (language) {
         const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
         return axios.get(encodedURI)
             .then(({data}) => data.items)
-    }
 }

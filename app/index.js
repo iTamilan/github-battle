@@ -1,7 +1,7 @@
-var React = require('react');
-var ReactDom = require('react-dom');
+import React from 'react'
+import ReactDom from 'react-dom'
 require('./index.css');
-var App = require('./component/App');
+import App from './component/App'
 
 // state
 // Lifecycle events

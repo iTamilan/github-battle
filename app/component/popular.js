@@ -1,7 +1,29 @@
-const React = require('react')
-const PropTypes = require('prop-types')
-const api = require('../utils/api')
-const Loading = require('./Loading');
+import React from 'react'
+import PropTypes from 'prop-types'
+import { fetchPopularRepos } from '../utils/api'
+import Loading from './Loading'
+
+function SelectLanguage({selectedLanguage, onSelect}) {
+  const languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
+
+  return (
+    <ul className='languages'>
+      {languages.map((language) => (
+          <li 
+            style = {language === selectedLanguage ? {color: '#d0021b'}: null}
+            onClick = {() => onSelect(language)}
+            key={language}>
+            {language}
+          </li>
+          ))}
+    </ul>
+  )
+}
+
+SelectLanguage.propTypes = {
+  selectedLanguage: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired
+}
 
 function RepoGrid({repos}) {
   return (
@@ -34,29 +56,7 @@ RepoGrid.propTypes = {
   repos: PropTypes.array.isRequired,
 }
 
-function SelectLanguage({selectedLanguage, onSelect}) {
-  const languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
-
-  return (
-    <ul className='languages'>
-      {languages.map((language) => {(
-          <li 
-            style = {language === selectedLanguage ? {color: '#d0021b'}: null}
-            onClick = {() => onSelect(language)}
-            key={language}>
-            {language}
-          </li>
-          )})}
-    </ul>
-  )
-}
-
-SelectLanguage.propTypes = {
-  selectedLanguage: PropTypes.string,
-  onSelect: PropTypes.func,
-}
-
-class Popular extends React.Component {
+export default class Popular extends React.Component {
 
   constructor(props) {
     super(props)
@@ -78,7 +78,7 @@ class Popular extends React.Component {
         repos: null
       }))
 
-    api.fetchPopularRepos(language)
+    fetchPopularRepos(language)
       .then((repos) => this.setState(() => ({repos})) )
   }
   render() {
@@ -94,5 +94,3 @@ class Popular extends React.Component {
     )
   }
 }
-
-module.exports = Popular;

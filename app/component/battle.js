@@ -1,10 +1,9 @@
-const React = require('react')
-const PropTypes = require('prop-types')
-const Link = require('react-router-dom').Link
-const PlayerPreview = require('./PlayerPreview');
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
+import PlayerPreview from './PlayerPreview'
 
 class PlayerInput extends React.Component {
-
     constructor(props) {
         super(props)
 
@@ -68,7 +67,7 @@ PlayerInput.defaultProps = {
     label: 'Username',
 }
 
-class Battle extends React.Component {
+export default class Battle extends React.Component {
 
     constructor(props) {
         super(props)
@@ -126,7 +125,7 @@ class Battle extends React.Component {
                     />}
                     {playerTwoImage !== null &&
                     <PlayerPreview 
-                    avatar={playerOneImage}
+                    avatar={playerTwoImage}
                      username={playerTwoName}>
 	                <button
 	                  className='reset'
@@ -149,5 +148,3 @@ class Battle extends React.Component {
         )
     }
 }
-
-module.exports = Battle
