@@ -1,23 +1,23 @@
-var React = require('react');
-var PropTypes = require('prop-types');
-var queryString = require('query-string');
-var api = require('../utils/api');
-var Link = require('react-router-dom').Link;
-var PlayerPreview = require('./PlayerPreview');
+const React = require('react');
+const PropTypes = require('prop-types');
+const queryString = require('query-string');
+const api = require('../utils/api');
+const Link = require('react-router-dom').Link;
+const PlayerPreview = require('./PlayerPreview');
 
 function Profile (props) {
-  var info = props.info;
+  const {login, avatar_url, name, location, company, followers, following, public_repos,blog} = props.info
 
   return (
-    <PlayerPreview username={info.login} avatar={info.avatar_url}>
+    <PlayerPreview username={login} avatar={avatar_url}>
       <ul className='space-list-items'>
-        {info.name && <li>{info.name}</li>}
-        {info.location && <li>{info.location}</li>}
-        {info.company && <li>{info.company}</li>}
-        <li>Followers: {info.followers}</li>
-        <li>Following: {info.following}</li>
-        <li>Public Repos: {info.public_repos}</li>
-        {info.blog && <li><a href={info.blog}>{info.blog}</a></li>}
+        {name && <li>{name}</li>}
+        {location && <li>{location}</li>}
+        {company && <li>{company}</li>}
+        <li>Followers: {followers}</li>
+        <li>Following: {following}</li>
+        <li>Public Repos: {public_repos}</li>
+        {blog && <li><a href={blog}>{blog}</a></li>}
       </ul>
     </PlayerPreview>
   )
@@ -27,12 +27,12 @@ Profile.propTypes = {
   info: PropTypes.object.isRequired,
 }
 
-function Player (props) {
+function Player ({label, score, profile}) {
   return (
     <div>
-      <h1 className='header'>{props.label}</h1>
-      <h3 style={{textAlign: 'center'}}>Score: {props.score}</h3>
-      <Profile info={props.profile} />
+      <h1 className='header'>{label}</h1>
+      <h3 style={{textAlign: 'center'}}>Score: {score}</h3>
+      <Profile info={profile} />
     </div>
   )
 }
@@ -59,31 +59,21 @@ class Results extends React.Component {
     api.battle([
       players.playerOneName,
       players.playerTwoName
-    ]).then(function (players) {
-      if (players === null) {
-        return this.setState(function () {
-          return {
+    ]).then((players) => {
+     players === null ? this.setState(() => ({
             error: 'Looks like there was an error. Check that both users exist on Github.',
             loading: false,
-          }
-        });
-      }
-
-      this.setState(function () {
-        return {
+          })) : this.setState(() => ({
           error: null,
           winner: players[0],
           loser: players[1],
           loading: false,
-        }
-      });
-    }.bind(this));
+        }))
+  })
   }
+
   render() {
-    var error = this.state.error;
-    var winner = this.state.winner;
-    var loser = this.state.loser;
-    var loading = this.state.loading;
+    const {error, winner, loser, loading} = this.state
 
     if (loading === true) {
       return <p>Loading!</p>
@@ -114,5 +104,4 @@ class Results extends React.Component {
     )
   }
 }
-
 module.exports = Results;
