@@ -51,13 +51,14 @@ export default class Results extends React.Component {
     error: null,
     loading: true,
   }
-  componentDidMount() {
+  async componentDidMount() {
     var players = queryString.parse(this.props.location.search);
 
-    battle([
+    const players = battle([
       players.playerOneName,
       players.playerTwoName
-    ]).then((players) => {
+    ])
+
      players === null ? this.setState(() => ({
             error: 'Looks like there was an error. Check that both users exist on Github.',
             loading: false,
@@ -67,7 +68,6 @@ export default class Results extends React.Component {
           loser: players[1],
           loading: false,
         }))
-  })
   }
 
   render() {
