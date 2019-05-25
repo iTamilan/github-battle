@@ -52,11 +52,11 @@ export default class Results extends React.Component {
     loading: true,
   }
   async componentDidMount() {
-    var players = queryString.parse(this.props.location.search);
+    const {playerOneName, playerTwoName} = queryString.parse(this.props.location.search);
 
-    const players = battle([
-      players.playerOneName,
-      players.playerTwoName
+    const players = await battle([
+      playerOneName,
+      playerTwoName
     ])
 
      players === null ? this.setState(() => ({
